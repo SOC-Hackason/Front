@@ -5,7 +5,13 @@ const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 function LoginButton() {
   const login = useGoogleLogin({
-    onSuccess: codeResponse => console.log(codeResponse),
+    onSuccess: codeResponse => fetch('http://localhost:8000/gmail/code', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ code: codeResponse.code }),
+    }),
     flow: 'auth-code',
     scope: "https://mail.google.com/"
   });
